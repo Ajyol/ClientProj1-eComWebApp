@@ -1,7 +1,16 @@
+using Microsoft.EntityFrameworkCore;
+using eComWebApp.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// SQL Connection
+builder.Services.AddDbContext<ApplicationDbContext>(Options =>
+{
+    Options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
 
 var app = builder.Build();
 
