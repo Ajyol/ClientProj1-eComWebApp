@@ -13,8 +13,8 @@ namespace eComWebApp.Data
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "An error occurred while seeding the database.")
-            };
+                logger.LogError(ex, "An error occurred while seeding the database.");
+            }
         }
         
         private static async Task SeedOrders(ApplicationDbContext context)
