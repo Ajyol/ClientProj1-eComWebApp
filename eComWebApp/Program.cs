@@ -14,6 +14,25 @@ builder.Services.AddDbContext<ApplicationDbContext>(Options =>
 
 var app = builder.Build();
 
+// Seed the database at the start
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var logger = services.GetRequiredService<ILogger<Program>>();
+
+    try
+    {
+        var context = services.GetRequiredService<ApplicationDbContext>();
+
+        // Call the initializer
+        await AppDbInitializer.Initialize(context, logger);
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "An error occurred during database initialization.");
+    }
+}
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
