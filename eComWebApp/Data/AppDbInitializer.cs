@@ -31,7 +31,7 @@ namespace eComWebApp.Data
             Address = "Name street 101",
             PhoneNumber = 9876546782,
             Email = "washington@gmail.com",
-            Service = new List<OrderService> { OrderService.Service1, OrderService.Service2 }
+            Service = new List<OrderServices> { OrderServices.Service1, OrderServices.Service2 }
         }
     };
 

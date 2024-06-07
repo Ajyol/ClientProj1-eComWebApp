@@ -8,30 +8,26 @@ namespace eComWebApp.Models
         [Key]
         public int Id { get; set; }
         [Display(Name = "Name")]
+        [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
 
         [Display(Name = "Address")]
+        [Required(ErrorMessage = "Address is required")]
         public string Address { get; set; }
 
         [Display(Name = "Email")]
+        [Required(ErrorMessage = "Email is required")]
         public string Email { get; set; }
 
         [Display(Name = "PhoneNumber")]
+        [Required(ErrorMessage = "Contact number is required")]
         public long PhoneNumber { get; set; }
 
         [Display(Name = "Service")]
-        public List<OrderService> Service { get; set; }
+        [Required(ErrorMessage = "Service order is required")]
+        public List<OrderServices> Service { get; set; }
 
 
     }
 
-    public class OrdersGetDto
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Address { get; set; }
-        public string Email { get; set; }
-        public long PhoneNumber { get; set; }
-        public OrderService Service { get; set; }
-    }
 }

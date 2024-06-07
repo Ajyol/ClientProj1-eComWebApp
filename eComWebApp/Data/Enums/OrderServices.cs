@@ -1,6 +1,6 @@
 ﻿namespace eComWebApp.Data.Enums
 {
-    public enum OrderService
+    public enum OrderServices
     {
         Service1,
         Service2,

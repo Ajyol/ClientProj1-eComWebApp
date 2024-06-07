@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using eComWebApp.Data;
+using eComWebApp.Data.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(Options =>
 {
     Options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+// Register OrdersService with the dependency injection container
+builder.Services.AddScoped<IOrdersService, OrdersService>();
 
 var app = builder.Build();
 

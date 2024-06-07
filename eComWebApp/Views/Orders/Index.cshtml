@@ -29,8 +29,7 @@
                             <td>@Html.DisplayFor(modelItem => item.Email)</td>
                             <td>
                                 <a href="#" class="btn btn-outline-primary btn-sm"><i class="bi bi-pencil-square"></i> </a>
-                                <a href="#" class="btn btn-outline-info btn-sm"><i class="bi bi-eye"></i> </a>
-                                <a href="#" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i> </a>
+                                <a class="btn btn-outline-danger btn-sm" asp-controller="Orders" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i> </a>
                             </td>
                         </tr>
                     }
@@ -38,4 +37,7 @@
             </table>
         </div>
     </div>
+    <img src="Images/image.jpg" alt="Welcome Image">
+
 </div>
+
