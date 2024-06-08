@@ -1,4 +1,6 @@
 ﻿using eComWebApp.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace eComWebApp.Data.Services
 {
@@ -7,7 +9,7 @@ namespace eComWebApp.Data.Services
         Task<IEnumerable<Order>> GetAll();
         Task<Order> GetByIdAsync(int id);
         Task AddAsync(Order order);
-        Task<Order> Update(int id);
-        void Delete(int id);
+        Task UpdateAsync(Order order);
+        Task DeleteAsync(int id);
     }
 }

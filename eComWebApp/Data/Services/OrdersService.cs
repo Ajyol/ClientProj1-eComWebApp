@@ -1,17 +1,19 @@
 ﻿using eComWebApp.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
-using System.Reflection.Metadata.Ecma335;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace eComWebApp.Data.Services
 {
     public class OrdersService : IOrdersService
     {
         private readonly ApplicationDbContext _context;
-        public OrdersService(ApplicationDbContext context) 
+        public OrdersService(ApplicationDbContext context)
         {
             _context = context;
         }
+
         public async Task AddAsync(Order order)
         {
             _context.Orders.Add(order);
@@ -43,10 +45,30 @@ namespace eComWebApp.Data.Services
             return order;
         }
 
-        public async Task<Order> Update(int id)
+        public async Task UpdateAsync(Order order)
         {
-            var order = await _context.Orders.FirstOrDefaultAsync(o => o.Id == id);
-            return order;
+            var existingOrder = await _context.Orders.FindAsync(order.Id);
+
+            if (existingOrder == null)
+            {
+                throw new ArgumentException("Order not found", nameof(order));
+            }
+
+            _context.Entry(existingOrder).CurrentValues.SetValues(order);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var order = await _context.Orders.FindAsync(id);
+
+            if (order == null)
+            {
+                throw new ArgumentException("Order not found", nameof(id));
+            }
+
+            _context.Orders.Remove(order);
+            await _context.SaveChangesAsync();
         }
     }
 }

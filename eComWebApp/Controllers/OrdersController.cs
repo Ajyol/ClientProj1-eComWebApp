@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using eComWebApp.Data;
 using eComWebApp.Models;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using eComWebApp.Data.Services;
+using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
 
 public class OrdersController : Controller
 {
@@ -22,11 +21,11 @@ public class OrdersController : Controller
     }
 
     // GET: Orders/Details/:id
-
+    [AllowAnonymous]
     public async Task<IActionResult> Details(int id)
     {
-        var orderDetails = _service.GetByIdAsync(id);
-        if (orderDetails == null) return View("Error");
+        var orderDetails = await _service.GetByIdAsync(id);
+        if (orderDetails == null) return View("NotFound");
         return View(orderDetails);
     }
 
@@ -43,33 +42,47 @@ public class OrdersController : Controller
         {
             return View(order);
         }
-        _service.AddAsync(order);
+        await _service.AddAsync(order);
         return RedirectToAction(nameof(Index));
     }
 
     // GET: Orders/Edit/:id
-    public IActionResult Edit(int id)
+    public async Task<IActionResult> Edit(int id)
     {
-        var orderEdit = _service.GetByIdAsync(id);
-        if (orderEdit != null) { return  View("Empty"); }
-        return View();
+        var orderEdit = await _service.GetByIdAsync(id);
+        if (orderEdit == null) { return View("NotFound"); }
+        return View(orderEdit);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Edit(Order order)
+    public async Task<IActionResult> Edit(int id, Order order)
     {
+        if (id != order.Id)
+        {
+            return NotFound();
+        }
+
         if (!ModelState.IsValid)
         {
             return View(order);
         }
-        _service.AddAsync(order);
-        return RedirectToAction(nameof(Index));
+
+        try
+        {
+            await _service.UpdateAsync(order);
+            return RedirectToAction(nameof(Index));
+        }
+        catch
+        {
+            return View(order);
+        }
     }
+
 
 
     public async Task<IActionResult> Delete(int id)
     {
-        _service.Delete(id);
+        await _service.DeleteAsync(id);
         return RedirectToAction(nameof(Index));
     }
 }
