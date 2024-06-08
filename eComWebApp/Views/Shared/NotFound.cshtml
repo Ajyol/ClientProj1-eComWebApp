@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "Page Not Found";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewData["Title"]</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .not-found-container {
+            margin-top: 100px;
+        }
+
+        .not-found-text {
+            font-size: 48px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container not-found-container text-center">
+        <h1 class="not-found-text">404</h1>
+        <p class="lead">Oops! The page you are looking for could not be found.</p>
+        <p class="lead">Please check the URL in the address bar, or go back to the <a href="/">homepage</a>.</p>
+    </div>
+</body>
+</html>

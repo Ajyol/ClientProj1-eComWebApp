@@ -69,7 +69,7 @@ public class OrdersController : Controller
 
         try
         {
-            await _service.UpdateAsync(order);
+            await _service.UpdateAsync(id,order);
             return RedirectToAction(nameof(Index));
         }
         catch

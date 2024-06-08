@@ -1,9 +1,10 @@
-﻿using eComWebApp.Data.Enums;
+﻿using eComWebApp.Data.Base;
+using eComWebApp.Data.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace eComWebApp.Models
 {
-    public class Order
+    public class Order : IEntityBase
     {
         [Key]
         public int Id { get; set; }
