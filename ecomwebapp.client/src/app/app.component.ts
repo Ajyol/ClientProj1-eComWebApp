@@ -1,21 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-
-interface WeatherForecast {
-  date: string;
-  temperatureC: number;
-  temperatureF: number;
-  summary: string;
-}
+import { IOrder } from './Models/order';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css'] // Corrected typo from "styleUrl" to "styleUrls"
 })
 export class AppComponent implements OnInit {
-  public forecasts: WeatherForecast[] = [];
 
+  orders: IOrder[] = [];
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
@@ -23,9 +17,10 @@ export class AppComponent implements OnInit {
   }
 
   getForecasts() {
-    this.http.get<WeatherForecast[]>('/weatherforecast').subscribe(
-      (result) => {
-        this.forecasts = result;
+    this.http.get<any>('https://localhost:7248/api/Orders').subscribe(
+      (result: IOrder[]) => { // Corrected the type of "result" to match the expected type of orders
+        console.log(result);
+        this.orders = result;
       },
       (error) => {
         console.error(error);

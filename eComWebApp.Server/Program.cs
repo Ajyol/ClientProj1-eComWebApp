@@ -35,6 +35,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors(options => options.WithOrigins("https://127.0.0.1:4200")
+.AllowAnyMethod()
+.AllowAnyHeader());
+
 app.UseAuthorization();
 
 app.MapControllers();
