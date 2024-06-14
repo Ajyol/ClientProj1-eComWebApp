@@ -1,10 +1,12 @@
 ﻿<app-nav-bar></app-nav-bar>
 
-<div class="container" style="margin-top: 140px;">
-    <h1>Welcome to {{title}}</h1>
-    <ul>
-        <li class="list-unstyled" *ngFor="let order of orders">
-            {{order.name}}
-        </li>
-    </ul>
+<div class="container" style="margin-top: 20px;">
+    <div class="carousel-container">
+        <carousel [interval]="3000" #carousel
+             (swipeleft)="handleSwipe($event)" (swiperight)="handleSwipe($event)">
+            <slide *ngFor="let image of carouselImages">
+                <img [src]="image.url" class="carousel-image" alt="Slide {{image.id}}">
+            </slide>
+        </carousel>
+    </div>
 </div>

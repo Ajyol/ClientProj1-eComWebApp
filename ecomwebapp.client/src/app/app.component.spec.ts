@@ -2,7 +2,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
-import { IOrder } from './Models/order'; // Assuming your IOrder interface is in this path
+import { IOrder } from './shared/Models/order'; // Assuming your IOrder interface is in this path
 
 describe('AppComponent', () => {
   let component: AppComponent;

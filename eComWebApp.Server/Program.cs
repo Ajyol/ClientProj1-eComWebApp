@@ -35,6 +35,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+//Fixes the cors error and help fetch from a different endpoint (front-back connection)
 app.UseCors(options => options.WithOrigins("https://127.0.0.1:4200")
 .AllowAnyMethod()
 .AllowAnyHeader());
