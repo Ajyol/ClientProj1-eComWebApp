@@ -5,8 +5,13 @@
         <carousel [interval]="3000" #carousel
              (swipeleft)="handleSwipe($event)" (swiperight)="handleSwipe($event)">
             <slide *ngFor="let image of carouselImages">
-                <img [src]="image.url" class="carousel-image" alt="Slide {{image.id}}">
+                <img [src]="image.url" class="carousel-image" alt="Slide {{image.id}}" style="height: 500px;">
             </slide>
         </carousel>
     </div>
+    <div class="container" style="margin-top: 15rem;">
+        <h2 style="text-align: center; margin-bottom: 2rem; color: grey;">Our Services: </h2>
+        <app-shop></app-shop>
+    </div>
+    
 </div>
