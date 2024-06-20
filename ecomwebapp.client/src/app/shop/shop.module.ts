@@ -4,10 +4,9 @@ import { ShopComponent } from './shop.component';
 import { CoreModule } from "../core/core.module";
 
 
-
 @NgModule({
     declarations: [
-        ShopComponent
+        ShopComponent,
     ],
     imports: [
         CommonModule,

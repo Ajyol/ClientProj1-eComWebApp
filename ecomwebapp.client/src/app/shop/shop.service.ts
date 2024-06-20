@@ -10,6 +10,6 @@ export class ShopService {
   constructor(private http: HttpClient) { }
 
   getOrders() {
-    return this.http.get<any>(this.baseUrl + '/Orders');
+    return this.http.get<IOrder[]>(this.baseUrl + '/Orders');
   }
 }
