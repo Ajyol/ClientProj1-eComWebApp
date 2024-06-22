@@ -2,6 +2,7 @@
 using System.Data;
 using System.Reflection;
 using eComWebApp.Models;
+using eComWebApp.Server.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace eComWebApp.Data;
@@ -13,6 +14,7 @@ public sealed class ApplicationDbContext : DbContext
     {
     }
     public DbSet<Order> Orders { get; set; }
+    public DbSet<User>  Users { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

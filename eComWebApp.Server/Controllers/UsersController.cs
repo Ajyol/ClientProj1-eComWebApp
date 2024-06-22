@@ -1,7 +1,9 @@
-﻿using eComWebApp.Server.Data.Services;
-using eComWebApp.Server.Models;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using eComWebApp.Server.Models;
+using eComWebApp.Data;
 
 namespace eComWebApp.Server.Controllers
 {
@@ -9,63 +11,132 @@ namespace eComWebApp.Server.Controllers
     [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
-        private readonly IUsersService _service;
+        private readonly ApplicationDbContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public UsersController(IUsersService service)
+        public UsersController(ApplicationDbContext context, UserManager<User> userManager)
         {
-            _service = service;
+            _context = context;
+            _userManager = userManager;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<List<UserGetDto>>> GetAll()
         {
-            var users = await _service.GetAll();
+            var users = await _context.Users
+                .Select(x => new UserGetDto
+                {
+                    Id = x.Id,
+                    UserName = x.UserName,
+                    FirstName = x.FirstName,
+                    LastName = x.LastName,
+                    Email = x.Email,
+                    DateOfBirth = x.DateOfBirth
+                })
+                .ToListAsync();
             return Ok(users);
         }
 
         [HttpGet("{id}")]
-        [AllowAnonymous]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<ActionResult<UserGetDto>> GetById(int id)
         {
-            var userDetails = await _service.GetByIdAsync(id);
-            if (userDetails == null) { return NotFound(); }
-            return Ok(userDetails);
+            var user = await _context.Users.FindAsync(id);
+
+            if (user == null)
+            {
+                return NotFound(); // Return 404 Not Found if the user is not found
+            }
+
+            var userDto = new UserGetDto
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                DateOfBirth = user.DateOfBirth
+            };
+
+            return Ok(userDto);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(User user)
+        public async Task<ActionResult<UserGetDto>> Create([FromBody] UserCreateDto newUserDto)
         {
-            if (!ModelState.IsValid)
+            var newUser = new User
             {
-                return BadRequest(ModelState);
+                UserName = newUserDto.UserName,
+                FirstName = newUserDto.FirstName,
+                LastName = newUserDto.LastName,
+                Email = newUserDto.Email,
+            };
+
+            var result = await _userManager.CreateAsync(newUser, newUserDto.Password);
+
+            if (result.Succeeded)
+            {
+                var userDto = new UserGetDto
+                {
+                    Id = newUser.Id,
+                    UserName = newUser.UserName,
+                    FirstName = newUser.FirstName,
+                    LastName = newUser.LastName,
+                    Email = newUser.Email,
+                    DateOfBirth = newUser.DateOfBirth
+                };
+
+                return CreatedAtAction(nameof(GetById), new { id = newUser.Id }, userDto);
             }
-            await _service.AddAsync(user);
-            return CreatedAtAction(nameof(GetById), new { id = user.Id }, user);
+            else
+            {
+                return BadRequest(result.Errors);
+            }
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, User user)
+        public async Task<ActionResult<UserGetDto>> Edit(int id, [FromBody] UserCreateDto updatedUser)
         {
-            if (!ModelState.IsValid) { return BadRequest(ModelState); }
-            if (id != user.Id) { return BadRequest(); }
+            var existingUser = await _context.Users.FindAsync(id);
 
-            try
+            if (existingUser == null)
             {
-                await _service.UpdateAsync(id, user);
-                return NoContent();
+                return NotFound(); // Return 404 Not Found if the user is not found
             }
-            catch
+
+            existingUser.UserName = updatedUser.UserName;
+            existingUser.FirstName = updatedUser.FirstName;
+            existingUser.LastName = updatedUser.LastName;
+            existingUser.Email = updatedUser.Email;
+
+            await _context.SaveChangesAsync();
+
+            var userDto = new UserGetDto
             {
-                return BadRequest();
-            }
+                Id = existingUser.Id,
+                UserName = existingUser.UserName,
+                FirstName = existingUser.FirstName,
+                LastName = existingUser.LastName,
+                Email = existingUser.Email,
+                DateOfBirth = existingUser.DateOfBirth
+            };
+
+            return Ok(userDto);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            await _service.DeleteAsync(id);
-            return NoContent();
+            var user = await _context.Users.FindAsync(id);
+
+            if (user == null)
+            {
+                return NotFound(); // Return 404 Not Found if the user is not found
+            }
+
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+
+            return NoContent(); // Return 204 No Content on successful deletion
         }
     }
-
 }
