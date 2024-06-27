@@ -6,33 +6,33 @@
   <div class="grid">
     <div class="row">
       <div class="col">
-        <img src="https://imgs.search.brave.com/jOP24srbgNT7n-iFu-lkWP6J62ISXIRrVXUNiVZKyQE/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMudW5zcGxhc2gu/Y29tL3Bob3RvLTE2/MTY1MzA5NDAzNTUt/MzUxZmFiZDk1MjRi/P2F1dG89Zm9ybWF0/JmZpdD1jcm9wJnE9/ODAmdz0xMDAwJml4/bGliPXJiLTQuMC4z/Jml4aWQ9TTN3eE1q/QTNmREI4TUh4elpX/RnlZMmg4TW54OGJX/OTJhV1Z6ZkdWdWZE/QjhmREI4Zkh3dw"
-          alt="Movie Poster" style="width: 100%; height: auto; max-width: 300px;">
+        <img src="/assets/images/truck1.png" alt="Truck Image" style="width: 100%; height: auto; max-width: 300px;">
       </div>
       <div class="col">
         <p class="text">
-          Welcome to NASSA, your premier destination for an unparalleled cinematic experience. At NASSA, we are
-          dedicated to transforming your movie-going journey into a memorable and immersive adventure. As avid film
-          enthusiasts ourselves, we understand the magic that happens when the lights dim, the screen comes to life,
-          and captivating stories unfold. Committed to providing the ultimate in entertainment, NASSA brings you a
-          carefully curated selection of the latest blockbusters, timeless classics, and exclusive releases. Our
-          state-of-the-art theaters, coupled with cutting-edge technology, ensure that every frame is a spectacle to
-          behold. Join us at NASSA, where passion meets the silver screen, and let the magic of cinema transport you
-          to new realms.
+          Welcome to [Your Company Name], your trusted partner for reliable transportation solutions. We specialize in shipping and delivering essential materials such as sand, stones, gravel, and more. With a commitment to efficiency and safety, we ensure that your goods reach their destination securely and on time.
+        </p>
+        <p class="text">
+          At [Your Company Name], we understand the importance of seamless logistics in construction, landscaping, and industrial projects. Our dedicated team of professionals and modern fleet of trucks are equipped to handle diverse transportation needs with precision and care.
+        </p>
+        <p class="text">
+          Whether you require bulk transport for large-scale projects or specialized delivery services, we are here to exceed your expectations. Trust [Your Company Name] to deliver excellence in every shipment, backed by years of industry experience and a passion for customer satisfaction.
         </p>
       </div>
     </div>
   </div>
 
   <div class="title">
-    <h2 style="text-align: center; margin-top: 2rem; padding: 0.5rem;">Developers</h2>
+    <h2 style="text-align: center; margin-top: 2rem; padding: 0.5rem;">Our Developers</h2>
   </div>
 
   <div class="grid developers">
     <div class="row">
       <div class="col" *ngFor="let developer of developers">
         <div class="card">
-          <img class="card-image" [src]="developer.imageSrc" [alt]="developer.altText">
+          <div class="card-image-container">
+            <img class="card-image" [src]="developer.imageSrc" [alt]="developer.altText">
+          </div>
           <div class="card-content">
             <p class="developer-name">{{ developer.name }}</p>
           </div>

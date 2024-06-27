@@ -7,6 +7,6 @@ import { Component } from '@angular/core';
 })
 export class AboutUsComponent {
   developers = [
-    { name: 'Ajyol Dhamala', imageSrc: 'assets/images/ajyol.heic', altText: 'Ajyol Dhamala' },
+    { name: 'Ajyol Dhamala', imageSrc: 'assets/images/ajyol.jpg', altText: 'Ajyol Dhamala' },
   ] 
 }

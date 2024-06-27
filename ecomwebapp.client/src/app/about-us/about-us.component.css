@@ -2,53 +2,76 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-}
 
-.title {
-  color: #afffff;
-}
+  .title {
+    h2 {
+      text-align: center;
+      margin-top: 2rem;
+      padding: 0.5rem;
+    }
+  }
 
-.grid {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+  .grid {
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-.row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
+    .col {
+      width: 50%;
+      padding: 0 15px;
+    }
+  }
 
-.col {
-  flex: 0 0 48%; /* Adjust as per your layout needs */
-  margin-bottom: 20px;
-}
+  .developers {
+    .row {
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-start;
+    }
 
-.text {
-  font-family: 'Times New Roman';
-  margin-left: 30px;
-}
+    .col {
+      flex: 1;
+      padding: 10px;
 
-.card {
-  width: 100%;
-  background-color: #f0f0f0;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+      .card {
+        text-align: center;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
 
-.card-image {
-  width: 100%;
-  height: auto;
-}
+        &:hover {
+          transform: translateY(-5px);
+        }
 
-.card-content {
-  padding: 10px;
-}
+        .card-image-container {
+          width: 150px; /* Adjust the size of the circular frame */
+          height: 150px; /* Adjust the size of the circular frame */
+          overflow: hidden;
+          border-radius: 50%;
+          margin: 0 auto;
+          border: 3px solid #fff; /* optional - adds a white border around the image */
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* optional - adds a subtle shadow */
 
-.developer-name {
-  text-align: center;
-  font-weight: bold;
+          img {
+            width: 100%; /* Ensures the image fills the circular frame */
+            height: 100%; /* Ensures the image fills the circular frame */
+            object-fit: cover; /* Maintain aspect ratio and cover the frame */
+            object-position: center; /* Center the image within the frame */
+          }
+        }
+
+        .card-content {
+          padding-top: 10px;
+        }
+
+        .developer-name {
+          font-weight: bold;
+          margin-top: 5px;
+        }
+      }
+    }
+  }
 }
