@@ -1,0 +1,63 @@
+﻿:host {
+    max-width: 1280px;
+    padding: 2rem;
+    text-align: center;
+}
+
+tr:nth-child(even) {
+    background: #F2F2F2;
+}
+
+tr:nth-child(odd) {
+    background: #FFF;
+}
+
+th, td {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+table {
+    margin: 0 auto;
+}
+.carousel-container {
+    position: relative;
+    height: 300px;
+}
+
+.carousel-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    z-index: 1;
+}
+
+.carousel-text h1 {
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.carousel-inner {
+    transition: transform 0.6s ease-in-out;
+}
+
+.carousel-item {
+    display: none;
+}
+
+.carousel-item.active {
+    display: block;
+}
+
+.carousel-image {
+    width: 100%; /* Ensure the image width fills the container */
+    height: auto; /* Let the browser calculate the height while maintaining aspect ratio */
+    max-height: 100%; /* Limit the height of the image to 100% of the container's height */
+}
+
+
+
+
