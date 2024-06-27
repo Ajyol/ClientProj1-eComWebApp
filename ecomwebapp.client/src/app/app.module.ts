@@ -10,10 +10,12 @@ import { ShopModule } from './shop/shop.module';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { HomeComponent } from './home/home.component';
 import { HomeModule } from './home/home.module';
+import { AboutUsComponent } from './about-us/about-us.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    AboutUsComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule,
