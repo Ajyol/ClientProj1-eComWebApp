@@ -31,7 +31,7 @@ builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
     options.Password.RequireUppercase = true;
     options.Password.RequiredLength = 6;
 })
-.AddEntityFrameworkStores<ApplicationDbContext>() // This should work now with the correct namespace.
+.AddEntityFrameworkStores<ApplicationDbContext>() // This should work now with the correct namespace
 .AddDefaultTokenProviders();
 
 // Register OrdersService with the dependency injection container
