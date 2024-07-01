@@ -7,7 +7,7 @@
     <div class="collapse navbar-collapse justify-content-center" id="navbarNavAltMarkup">
       <div class="navbar-nav">
         <a class="nav-link active" aria-current="page" [routerLink]="['/']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
-        <a class="nav-link" href="#">Orders</a>
+        <a class="nav-link" [routerLink]="['/order']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Orders</a>
         <a class="nav-link" href="#">Pricing</a>
         <a class="nav-link" [routerLink]="['/about']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">About us</a>
       </div>
