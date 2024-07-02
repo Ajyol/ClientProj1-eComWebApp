@@ -11,6 +11,7 @@ import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { HomeModule } from './home/home.module';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { OrderComponent } from './order/order.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { OrderComponent } from './order/order.component';
     ShopModule,
     CarouselModule,
     HomeModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
