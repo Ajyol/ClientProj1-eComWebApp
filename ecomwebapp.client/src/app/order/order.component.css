@@ -1,73 +1,84 @@
 .form-container {
-    max-width: 400px;
-    margin: 50px auto;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-  }
-  
-  h1 {
-    text-align: center;
-    color: #4267B2;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    margin-bottom: 20px;
-  }
-  
-  .form-group {
-    margin-bottom: 15px;
-  }
-  
-  .form-group label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #333;
-  }
-  
-  .form-control {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 14px;
-  }
-  
-  .services {
-    display: flex;
-    flex-wrap: wrap;
-  }
-  
-  .service-label {
-    flex: 1 1 50%;
-    display: flex;
-    align-items: center;
-    margin-bottom: 5px;
-  }
-  
-  .service-checkbox {
-    margin-right: 10px;
-  }
-  
-  .submit-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #4267B2;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
-  .submit-button:hover {
-    background-color: #365899;
-  }
-  
-  .error {
-    color: red;
-    font-size: 12px;
-    margin-top: 5px;
-  }
-  
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+h1 {
+  text-align: center;
+  color: #4267b2;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.services {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.service-label {
+  flex: 1 1 50%;
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.service-checkbox {
+  margin-right: 10px;
+}
+
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.hidden-checkbox {
+  display: none;
+}
+
+.styled-checkbox {
+  position: relative;
+  display: inline-block;
+  padding-left: 30px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.submit-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #4267b2;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.submit-button:hover {
+  background-color: #365899;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}

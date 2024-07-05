@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl, AbstractControl } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { IOrder } from '../shared/Models/order';
 import { ActivatedRoute } from '@angular/router';
+import { IOrder } from '../shared/Models/order';
 
 @Component({
   selector: 'app-order',
