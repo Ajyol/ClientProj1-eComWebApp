@@ -20,13 +20,13 @@ import { ReactiveFormsModule } from '@angular/forms';
     OrderComponent,
   ],
   imports: [
-    BrowserModule, HttpClientModule,
+    BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    HttpClientModule,
     CoreModule,
     ShopModule,
-    CarouselModule,
+    CarouselModule.forRoot(),
     HomeModule,
     ReactiveFormsModule
   ],
