@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using eComWebApp.Server.Models;
 using eComWebApp.Data;
+using Microsoft.Extensions.Logging;
 
 namespace eComWebApp.Server.Controllers
 {
@@ -13,11 +14,13 @@ namespace eComWebApp.Server.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
+        private readonly ILogger<UsersController> _logger;
 
-        public UsersController(ApplicationDbContext context, UserManager<User> userManager)
+        public UsersController(ApplicationDbContext context, UserManager<User> userManager, ILogger<UsersController> logger)
         {
             _context = context;
             _userManager = userManager;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -44,7 +47,7 @@ namespace eComWebApp.Server.Controllers
 
             if (user == null)
             {
-                return NotFound(); // Return 404 Not Found if the user is not found
+                return NotFound();
             }
 
             var userDto = new UserGetDto
@@ -61,8 +64,14 @@ namespace eComWebApp.Server.Controllers
         }
 
         [HttpPost]
+        [HttpPost]
         public async Task<ActionResult<UserGetDto>> Create([FromBody] UserCreateDto newUserDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var newUser = new User
             {
                 UserName = newUserDto.UserName,
@@ -93,14 +102,20 @@ namespace eComWebApp.Server.Controllers
             }
         }
 
+
         [HttpPut("{id}")]
         public async Task<ActionResult<UserGetDto>> Edit(int id, [FromBody] UserCreateDto updatedUser)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var existingUser = await _context.Users.FindAsync(id);
 
             if (existingUser == null)
             {
-                return NotFound(); // Return 404 Not Found if the user is not found
+                return NotFound();
             }
 
             existingUser.UserName = updatedUser.UserName;
@@ -130,13 +145,13 @@ namespace eComWebApp.Server.Controllers
 
             if (user == null)
             {
-                return NotFound(); // Return 404 Not Found if the user is not found
+                return NotFound();
             }
 
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
 
-            return NoContent(); // Return 204 No Content on successful deletion
+            return NoContent();
         }
     }
 }
