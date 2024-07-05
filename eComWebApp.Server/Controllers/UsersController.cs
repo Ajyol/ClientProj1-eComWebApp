@@ -77,6 +77,7 @@ namespace eComWebApp.Server.Controllers
                 UserName = newUserDto.UserName,
                 FirstName = newUserDto.FirstName,
                 LastName = newUserDto.LastName,
+                Password = newUserDto.Password,
                 Email = newUserDto.Email,
             };
 

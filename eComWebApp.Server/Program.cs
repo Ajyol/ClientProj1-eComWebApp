@@ -1,13 +1,9 @@
 using eComWebApp.Data;
 using eComWebApp.Data.Services;
 using eComWebApp.Server.Models;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
