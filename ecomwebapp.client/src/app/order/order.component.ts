@@ -1,15 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl, AbstractControl } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { IOrder } from '../shared/Models/order';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-order',
   templateUrl: './order.component.html',
   styleUrls: ['./order.component.css']
 })
-export class OrderComponent {
+export class OrderComponent implements OnInit {
   orderForm: FormGroup;
+  selectedService: string | null = null;
 
   services = [
     { id: 1, name: 'Service 1' },
@@ -17,7 +19,7 @@ export class OrderComponent {
     { id: 3, name: 'Service 3' },
   ];
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  constructor(private fb: FormBuilder, private http: HttpClient, private route: ActivatedRoute) {
     this.orderForm = this.fb.group({
       name: ['', Validators.required],
       address: ['', Validators.required],
@@ -25,6 +27,22 @@ export class OrderComponent {
       phoneNumber: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
       service: this.fb.array(this.services.map(() => this.fb.control(false)))
     });
+  }
+
+  ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      this.selectedService = params['service'] || null;
+      this.setSelectedService();
+    });
+  }
+
+  setSelectedService(): void {
+    if (this.selectedService) {
+      const serviceIndex = this.services.findIndex(service => service.name === this.selectedService);
+      if (serviceIndex !== -1) {
+        (this.orderForm.get('service') as FormArray).controls[serviceIndex].setValue(true);
+      }
+    }
   }
 
   onSubmit(): void {
