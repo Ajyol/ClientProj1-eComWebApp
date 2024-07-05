@@ -6,12 +6,12 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-shop',
   templateUrl: './shop.component.html',
-  styleUrl: './shop.component.css'
+  styleUrls: ['./shop.component.css']
 })
-export class ShopComponent implements OnInit{
+export class ShopComponent implements OnInit {
   orders: IOrder[] = [];
 
-  constructor(private shopService : ShopService, private router: Router) {    }
+  constructor(private shopService: ShopService, private router: Router) { }
 
   ngOnInit(): void {
     this.shopService.getOrders().subscribe(response => {
@@ -21,8 +21,7 @@ export class ShopComponent implements OnInit{
     });
   }
 
-  navigateTo(route : string){
-    this.router.navigate([route]);
+  navigateTo(service: string) {
+    this.router.navigate(['/order'], { queryParams: { service } });
   }
-
 }

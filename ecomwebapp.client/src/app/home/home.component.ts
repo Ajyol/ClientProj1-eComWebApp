@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CarouselComponent } from 'ngx-bootstrap/carousel';
 
 @Component({
@@ -8,6 +8,7 @@ import { CarouselComponent } from 'ngx-bootstrap/carousel';
 })
 export class HomeComponent implements OnInit {
   @ViewChild('carousel') carousel!: CarouselComponent;
+  @ViewChild('services', { static: false }) servicesElement!: ElementRef;
 
   carouselImages = [
     { id: 1, url: 'assets/images/truck1.png' },
@@ -19,10 +20,13 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {}
 
-  // Function to handle swipe events
   handleSwipe(event: any) {
     if (event.deltaX > 0) {
-      this.carousel.nextSlide(); // Go to the next slide
+      this.carousel.nextSlide();
     }
+  }
+
+  scrollToServices() {
+    this.servicesElement.nativeElement.scrollIntoView({ behavior: 'smooth' });
   }
 }

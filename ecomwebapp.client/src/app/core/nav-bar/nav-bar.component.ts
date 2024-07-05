@@ -1,14 +1,24 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ViewportScroller } from '@angular/common';
 
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
-  styleUrl: './nav-bar.component.css'
+  styleUrls: ['./nav-bar.component.css']
 })
-export class NavBarComponent implements OnInit{
+export class NavBarComponent implements OnInit {
 
-  constructor() {}
-  ngOnInit() {
-    
+  constructor(private router: Router, private viewportScroller: ViewportScroller) {}
+
+  scrollToServices() {
+    this.router.navigate(['/']).then(() => {
+      const element = document.querySelector('.services');
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
   }
+
+  ngOnInit() {}
 }
