@@ -8,12 +8,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from './core/core.module';
 import { ShopModule } from './shop/shop.module';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
-import { HomeComponent } from './home/home.component';
 import { HomeModule } from './home/home.module';
+import { AboutUsComponent } from './about-us/about-us.component';
+import { OrderComponent } from './order/order.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent,
+    AboutUsComponent,
+    OrderComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule,
@@ -24,6 +28,7 @@ import { HomeModule } from './home/home.module';
     ShopModule,
     CarouselModule,
     HomeModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

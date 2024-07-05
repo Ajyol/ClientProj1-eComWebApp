@@ -1,12 +1,25 @@
 a {
     text-decoration: none;
-    color: #343a40;
-
+    color: #343a40; /* Default color for links */
+  
     &.active {
-        color: orange;
+      color: orange; /* Color for active links */
     }
-}
-
-.logo {
+  }
+  
+  .nav-link {
+    color: #85a7c9; /* Ensure navbar links have a contrasting color */
+  }
+  
+  .nav-link:hover {
+    color: #0056b3; /* Color for hovered links */
+  }
+  
+  .logo {
     cursor: pointer;
-}
+  
+    &:focus {
+      outline: none;
+    }
+  }
+  
