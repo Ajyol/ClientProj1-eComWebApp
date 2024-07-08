@@ -12,12 +12,14 @@ import { HomeModule } from './home/home.module';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { OrderComponent } from './order/order.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { UserComponent } from './user/user.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AboutUsComponent,
     OrderComponent,
+    UserComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,16 @@
+<div class="user-container">
+  <h1>Orders List</h1>
+  <div *ngIf="orders.length === 0" class="no-orders">
+    No orders available.
+  </div>
+  <div *ngIf="orders.length > 0" class="orders-list">
+    <div *ngFor="let order of orders" class="order-item">
+      <h3>Order ID: {{ order.id }}</h3>
+      <p>Name: {{ order.name }}</p>
+      <p>Address: {{ order.address }}</p>
+      <p>Email: {{ order.email }}</p>
+      <p>Phone Number: {{ order.phoneNumber }}</p>
+      <p>Services: {{ order.service.join(', ') }}</p>
+    </div>
+  </div>
+</div>
