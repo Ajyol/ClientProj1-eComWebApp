@@ -1,21 +1,22 @@
 <div class="login-container">
-    <h1>Login</h1>
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <input formControlName="userName" type="text" class="form-control" placeholder="User Name" />
-        <div class="error" *ngIf="loginForm.get('userName')?.invalid && loginForm.get('userName')?.touched">
-          User Name is required.
-        </div>
+  <h2>Login</h2>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <input id="userName" formControlName="userName" type="text" class="form-control" placeholder="Username">
+      <div class="error" *ngIf="loginForm.get('userName')?.invalid && loginForm.get('userName')?.touched">
+        Username is required.
       </div>
-  
-      <div class="form-group">
-        <input formControlName="password" type="password" class="form-control" placeholder="Password" />
-        <div class="error" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
-          Password is required.
-        </div>
+    </div>
+
+    <div class="form-group">
+      <input id="password" formControlName="password" type="password" class="form-control" placeholder="Password">
+      <div class="error" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+        Password is required.
       </div>
-  
-      <button type="submit" class="submit-button">Login</button>
-    </form>
-  </div>
-  
+    </div>
+
+    <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div> <!-- Display error message -->
+
+    <button type="submit" class="submit-button">Login</button>
+  </form>
+</div>

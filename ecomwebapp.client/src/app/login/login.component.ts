@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
+  errorMessage: string | null = null; // Add error message property
 
   constructor(private fb: FormBuilder, private http: HttpClient, private router: Router) {
     this.loginForm = this.fb.group({
@@ -25,10 +26,11 @@ export class LoginComponent implements OnInit {
       this.http.post('https://localhost:7248/api/Users/Login', this.loginForm.value).subscribe({
         next: (response) => {
           console.log('Login successful', response);
-          this.router.navigate(['/user']); 
+          this.router.navigate(['/user']);  // Navigate to the user page
         },
         error: (error) => {
           console.error('Login error', error);
+          this.errorMessage = 'Invalid username or password';  // Set error message
         }
       });
     } else {
