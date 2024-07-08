@@ -154,5 +154,20 @@ namespace eComWebApp.Server.Controllers
 
             return NoContent();
         }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+        {
+            var user = await _userManager.FindByNameAsync(loginDto.UserName);
+
+            if (user == null || !await _userManager.CheckPasswordAsync(user, loginDto.Password))
+            {
+                return Unauthorized("Invalid username or password.");
+            }
+
+
+            return Ok(new { message = "Login successful" });
+        }
+
     }
 }
