@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { ShopService } from './shop.service';
-import { IOrder } from '../shared/Models/order';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -8,18 +6,9 @@ import { Router } from '@angular/router';
   templateUrl: './shop.component.html',
   styleUrls: ['./shop.component.css']
 })
-export class ShopComponent implements OnInit {
-  orders: IOrder[] = [];
+export class ShopComponent {
 
-  constructor(private shopService: ShopService, private router: Router) { }
-
-  ngOnInit(): void {
-    this.shopService.getOrders().subscribe(response => {
-      this.orders = response;
-    }, error => {
-      console.log(error);
-    });
-  }
+  constructor(private router: Router) { }
 
   navigateTo(service: string) {
     this.router.navigate(['/order'], { queryParams: { service } });

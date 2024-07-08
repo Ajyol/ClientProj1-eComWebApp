@@ -1,0 +1,43 @@
+.user-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+  }
+  
+  h1 {
+    text-align: center;
+    color: #4267b2;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    margin-bottom: 20px;
+  }
+  
+  .no-orders {
+    text-align: center;
+    color: #777;
+  }
+  
+  .orders-list {
+    margin-top: 20px;
+  }
+  
+  .order-item {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+  }
+  
+  .order-item h3 {
+    margin-top: 0;
+    color: #4267b2;
+  }
+  
+  .order-item p {
+    margin: 5px 0;
+  }
+  
