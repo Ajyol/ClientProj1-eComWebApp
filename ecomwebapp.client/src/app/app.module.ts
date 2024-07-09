@@ -14,6 +14,7 @@ import { OrderComponent } from './order/order.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UserComponent } from './user/user.component';
 import { LoginComponent } from './login/login.component';
+import { FooterComponent } from './core/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { LoginComponent } from './login/login.component';
     OrderComponent,
     UserComponent,
     LoginComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,

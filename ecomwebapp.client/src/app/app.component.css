@@ -57,27 +57,7 @@ table {
     height: auto; /* Let the browser calculate the height while maintaining aspect ratio */
     max-height: 100%; /* Limit the height of the image to 100% of the container's height */
 }
-/* footer.component.css */
-.footer {
-    background-color: #f8f9fa;
-    padding: 20px;
-    text-align: center;
-    border-top: 1px solid #ddd;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-  }
-  
-  .footer-link {
-    color: #007bff;
-    text-decoration: none;
-    margin-left: 10px;
-  }
-  
-  .footer-link:hover {
-    text-decoration: underline;
-  }
-  
+
 
 
 
