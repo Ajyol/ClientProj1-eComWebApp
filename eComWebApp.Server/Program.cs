@@ -4,7 +4,6 @@ using eComWebApp.Server.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -35,6 +34,19 @@ builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
 
 // Register OrdersService with the dependency injection container
 builder.Services.AddScoped<IOrdersService, OrdersService>();
+
+// Register EmailService
+builder.Services.AddSingleton<IEmailService>(sp =>
+{
+    var config = sp.GetRequiredService<IConfiguration>();
+    var smtpSettings = config.GetSection("SmtpSettings");
+    return new EmailService(
+        smtpSettings["Server"],
+        int.Parse(smtpSettings["Port"]),
+        smtpSettings["User"],
+        smtpSettings["Pass"]
+    );
+});
 
 var app = builder.Build();
 

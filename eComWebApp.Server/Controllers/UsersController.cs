@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using eComWebApp.Server.Models;
 using eComWebApp.Data;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Identity.Data;
 
 namespace eComWebApp.Server.Controllers
 {
@@ -15,12 +16,15 @@ namespace eComWebApp.Server.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
         private readonly ILogger<UsersController> _logger;
+        private readonly IEmailService _emailService;
 
-        public UsersController(ApplicationDbContext context, UserManager<User> userManager, ILogger<UsersController> logger)
+
+        public UsersController(ApplicationDbContext context, UserManager<User> userManager, ILogger<UsersController> logger, IEmailService emailService)
         {
             _context = context;
             _userManager = userManager;
             _logger = logger;
+            _emailService = emailService;
         }
 
         [HttpGet]
@@ -63,7 +67,6 @@ namespace eComWebApp.Server.Controllers
             return Ok(userDto);
         }
 
-        [HttpPost]
         [HttpPost]
         public async Task<ActionResult<UserGetDto>> Create([FromBody] UserCreateDto newUserDto)
         {
@@ -168,6 +171,36 @@ namespace eComWebApp.Server.Controllers
 
             return Ok(new { message = "Login successful" });
         }
+
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto request)
+        {
+            var user = await _userManager.FindByEmailAsync(request.Email);
+            if (user == null)
+                return BadRequest("User not found");
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var resetLink = Url.Action("ResetPassword", "Users", new { token, email = user.Email }, Request.Scheme);
+
+            await _emailService.SendEmailAsync(user.Email, "Password Reset", $"<a href='{resetLink}'>Reset Password</a>");
+
+            return Ok("Password reset link has been sent to your email.");
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto request)
+        {
+            var user = await _userManager.FindByEmailAsync(request.Email);
+            if (user == null)
+                return BadRequest("User not found");
+
+            var result = await _userManager.ResetPasswordAsync(user, request.Token, request.NewPassword);
+            if (!result.Succeeded)
+                return BadRequest(result.Errors);
+
+            return Ok("Password has been reset.");
+        }
+
 
     }
 }
