@@ -1,8 +1,13 @@
 using eComWebApp.Data;
 using eComWebApp.Data.Services;
 using eComWebApp.Server.Models;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using System;
+using System.IO;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,10 +48,15 @@ builder.Services.AddSingleton<IEmailService>(sp =>
     return new EmailService(
         smtpSettings["Server"],
         int.Parse(smtpSettings["Port"]),
-        smtpSettings["User"],
-        smtpSettings["Pass"]
+        smtpSettings["Username"], // Corrected to Username
+        smtpSettings["Password"]
     );
 });
+
+// Add Data Protection
+builder.Services.AddDataProtection()
+    .PersistKeysToFileSystem(new DirectoryInfo(@"c:\keys")) // Ensure this path exists and is writable
+    .SetApplicationName("eComWebApp");
 
 var app = builder.Build();
 
@@ -55,12 +65,14 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var dbContext = services.GetRequiredService<ApplicationDbContext>();
+    var logger = services.GetRequiredService<ILogger<Program>>();
 
     try
     {
         // Delete and recreate the database
         dbContext.Database.EnsureDeleted();
         dbContext.Database.EnsureCreated();
+        await AppDbInitializer.Initialize(dbContext, logger);
     }
     catch (Exception ex)
     {
