@@ -40,6 +40,7 @@ builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
 // Register OrdersService with the dependency injection container
 builder.Services.AddScoped<IOrdersService, OrdersService>();
 
+
 // Register EmailService
 builder.Services.AddSingleton<IEmailService>(sp =>
 {
@@ -48,8 +49,10 @@ builder.Services.AddSingleton<IEmailService>(sp =>
     return new EmailService(
         smtpSettings["Server"],
         int.Parse(smtpSettings["Port"]),
-        smtpSettings["Username"], // Corrected to Username
-        smtpSettings["Password"]
+        smtpSettings["User"], // Corrected to Username
+        smtpSettings["Pass"],
+        sp.GetRequiredService<ILogger<EmailService>>() // Inject ILogger<EmailService>
+
     );
 });
 

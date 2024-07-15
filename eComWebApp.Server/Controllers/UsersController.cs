@@ -219,10 +219,19 @@ namespace eComWebApp.Server.Controllers
 
             var resetLink = Url.Action("ResetPassword", "Users", new { token, email = user.Email }, Request.Scheme);
 
+            if (string.IsNullOrEmpty(user.Email))
+            {
+                _logger.LogError("User email is null or empty.");
+                return BadRequest("User email is invalid.");
+            }
+
+            _logger.LogInformation($"Sending password reset email to: {user.Email}");
+
             await _emailService.SendEmailAsync(user.Email, "Password Reset", $"<a href='{resetLink}'>Reset Password</a>");
 
             return Ok("Password reset link has been sent to your email.");
         }
+
 
         [HttpPost("reset-password")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto request)
