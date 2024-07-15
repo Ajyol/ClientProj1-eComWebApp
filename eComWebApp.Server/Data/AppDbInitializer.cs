@@ -64,10 +64,10 @@ public class AppDbInitializer
         {
             new Order
             {
-                Name = "Ajyol Dhamala",
+                Name = "Washington DC",
                 Address = "Name street 101",
                 PhoneNumber = 9876546782,
-                Email = "ajyold81@gmail.com",
+                Email = "uscapital@gmail.com",
                 Service = new List<OrderServices> { OrderServices.Service1, OrderServices.Service2 }
             }
         };
