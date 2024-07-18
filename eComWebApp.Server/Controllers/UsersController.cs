@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using eComWebApp.Server.Models;
-using eComWebApp.Data;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using eComWebApp.Data;
+using eComWebApp.Server.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace eComWebApp.Server.Controllers
 {
@@ -15,12 +18,14 @@ namespace eComWebApp.Server.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
         private readonly ILogger<UsersController> _logger;
+        private readonly IEmailService _emailService;
 
-        public UsersController(ApplicationDbContext context, UserManager<User> userManager, ILogger<UsersController> logger)
+        public UsersController(ApplicationDbContext context, UserManager<User> userManager, ILogger<UsersController> logger, IEmailService emailService)
         {
             _context = context;
             _userManager = userManager;
             _logger = logger;
+            _emailService = emailService;
         }
 
         [HttpGet]
@@ -64,7 +69,6 @@ namespace eComWebApp.Server.Controllers
         }
 
         [HttpPost]
-        [HttpPost]
         public async Task<ActionResult<UserGetDto>> Create([FromBody] UserCreateDto newUserDto)
         {
             if (!ModelState.IsValid)
@@ -77,8 +81,8 @@ namespace eComWebApp.Server.Controllers
                 UserName = newUserDto.UserName,
                 FirstName = newUserDto.FirstName,
                 LastName = newUserDto.LastName,
-                Password = newUserDto.Password,
                 Email = newUserDto.Email,
+                DateOfBirth = newUserDto.DateOfBirth
             };
 
             var result = await _userManager.CreateAsync(newUser, newUserDto.Password);
@@ -103,9 +107,8 @@ namespace eComWebApp.Server.Controllers
             }
         }
 
-
         [HttpPut("{id}")]
-        public async Task<ActionResult<UserGetDto>> Edit(int id, [FromBody] UserCreateDto updatedUser)
+        public async Task<ActionResult<UserGetDto>> Edit(int id, [FromBody] UserCreateDto updatedUserDto)
         {
             if (!ModelState.IsValid)
             {
@@ -119,24 +122,32 @@ namespace eComWebApp.Server.Controllers
                 return NotFound();
             }
 
-            existingUser.UserName = updatedUser.UserName;
-            existingUser.FirstName = updatedUser.FirstName;
-            existingUser.LastName = updatedUser.LastName;
-            existingUser.Email = updatedUser.Email;
+            existingUser.UserName = updatedUserDto.UserName;
+            existingUser.FirstName = updatedUserDto.FirstName;
+            existingUser.LastName = updatedUserDto.LastName;
+            existingUser.Email = updatedUserDto.Email;
+            existingUser.DateOfBirth = updatedUserDto.DateOfBirth;
 
-            await _context.SaveChangesAsync();
+            var result = await _userManager.UpdateAsync(existingUser);
 
-            var userDto = new UserGetDto
+            if (result.Succeeded)
             {
-                Id = existingUser.Id,
-                UserName = existingUser.UserName,
-                FirstName = existingUser.FirstName,
-                LastName = existingUser.LastName,
-                Email = existingUser.Email,
-                DateOfBirth = existingUser.DateOfBirth
-            };
+                var userDto = new UserGetDto
+                {
+                    Id = existingUser.Id,
+                    UserName = existingUser.UserName,
+                    FirstName = existingUser.FirstName,
+                    LastName = existingUser.LastName,
+                    Email = existingUser.Email,
+                    DateOfBirth = existingUser.DateOfBirth
+                };
 
-            return Ok(userDto);
+                return Ok(userDto);
+            }
+            else
+            {
+                return BadRequest(result.Errors);
+            }
         }
 
         [HttpDelete("{id}")]
@@ -149,10 +160,16 @@ namespace eComWebApp.Server.Controllers
                 return NotFound();
             }
 
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
+            var result = await _userManager.DeleteAsync(user);
 
-            return NoContent();
+            if (result.Succeeded)
+            {
+                return NoContent();
+            }
+            else
+            {
+                return BadRequest(result.Errors);
+            }
         }
 
         [HttpPost("login")]
@@ -165,9 +182,80 @@ namespace eComWebApp.Server.Controllers
                 return Unauthorized("Invalid username or password.");
             }
 
-
             return Ok(new { message = "Login successful" });
         }
 
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto request)
+        {
+            if (string.IsNullOrEmpty(request.Email))
+            {
+                _logger.LogError("Email is null or empty in forgot password request.");
+                return BadRequest("Email is required.");
+            }
+
+            _logger.LogInformation($"Received forgot password request for email: {request.Email}");
+
+            var user = await _userManager.Users
+                                             .SingleOrDefaultAsync(u => u.Email.ToLower() == request.Email.ToLower());
+
+            if (user == null)
+            {
+                _logger.LogError($"No user found with email {request.Email}");
+                return BadRequest("User not found");
+            }
+
+            _logger.LogInformation($"User details: Id={user.Id}, Email={user.Email}, UserName={user.UserName}");
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            if (token == null)
+            {
+                _logger.LogError("Failed to generate password reset token.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to generate password reset token.");
+            }
+
+            _logger.LogInformation($"Generated token: {token}");
+
+            var resetLink = Url.Action("ResetPassword", "Users", new { token, email = user.Email }, Request.Scheme);
+
+            if (string.IsNullOrEmpty(user.Email))
+            {
+                _logger.LogError("User email is null or empty.");
+                return BadRequest("User email is invalid.");
+            }
+
+            _logger.LogInformation($"Sending password reset email to: {user.Email}");
+
+            await _emailService.SendEmailAsync(user.Email, "Password Reset", $"<a href='{resetLink}'>Reset Password</a>");
+
+            return Ok("Password reset link has been sent to your email.");
+        }
+
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto request)
+        {
+            if (string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Token) || string.IsNullOrEmpty(request.NewPassword))
+            {
+                return BadRequest("Email, token, and new password are required.");
+            }
+
+            var user = await _userManager.FindByEmailAsync(request.Email);
+
+            if (user == null)
+            {
+                return BadRequest("User not found");
+            }
+
+            var result = await _userManager.ResetPasswordAsync(user, request.Token, request.NewPassword);
+
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
+            }
+
+            return Ok("Password has been reset.");
+        }
     }
 }

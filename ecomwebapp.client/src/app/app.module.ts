@@ -15,6 +15,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { UserComponent } from './user/user.component';
 import { LoginComponent } from './login/login.component';
 import { FooterComponent } from './core/footer/footer.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { FormsModule } from '@angular/forms'; // Import FormsModule here
+
 
 @NgModule({
   declarations: [
@@ -24,6 +28,8 @@ import { FooterComponent } from './core/footer/footer.component';
     UserComponent,
     LoginComponent,
     FooterComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,7 +40,8 @@ import { FooterComponent } from './core/footer/footer.component';
     ShopModule,
     CarouselModule.forRoot(),
     HomeModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
