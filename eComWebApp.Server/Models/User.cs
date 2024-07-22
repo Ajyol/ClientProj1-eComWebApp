@@ -47,7 +47,7 @@ namespace eComWebApp.Server.Models
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
-        public string Password { get; set; }
+        public string PasswordHash { get; set; }
     }
 
     public class LoginDto
@@ -57,7 +57,7 @@ namespace eComWebApp.Server.Models
 
         [Required]
         [DataType(DataType.Password)]
-        public string Password { get; set; }
+        public string PasswordHash { get; set; }
     }
 
     public class ForgotPasswordDto

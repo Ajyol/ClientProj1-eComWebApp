@@ -1,10 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using eComWebApp.Data;
 using eComWebApp.Server.Models;
 using Microsoft.EntityFrameworkCore;
@@ -85,7 +80,7 @@ namespace eComWebApp.Server.Controllers
                 DateOfBirth = newUserDto.DateOfBirth
             };
 
-            var result = await _userManager.CreateAsync(newUser, newUserDto.Password);
+            var result = await _userManager.CreateAsync(newUser, newUserDto.PasswordHash);
 
             if (result.Succeeded)
             {
@@ -177,7 +172,7 @@ namespace eComWebApp.Server.Controllers
         {
             var user = await _userManager.FindByNameAsync(loginDto.UserName);
 
-            if (user == null || !await _userManager.CheckPasswordAsync(user, loginDto.Password))
+            if (user == null || !await _userManager.CheckPasswordAsync(user, loginDto.PasswordHash))
             {
                 return Unauthorized("Invalid username or password.");
             }
