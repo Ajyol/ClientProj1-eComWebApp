@@ -33,12 +33,10 @@
       <label for="service">Services:</label>
       <div formArrayName="service" class="services">
         <label *ngFor="let service of services; let i = index" class="service-label">
-          <input type="checkbox" [formControlName]="i" class="service-checkbox"> {{ service.name }}
+          <input type="checkbox" [formControlName]="i" class="service-checkbox"> {{ service.name }} ({{ service.price }} USD)
         </label>
       </div>
-      <div class="error" *ngIf="orderForm.get('service')?.invalid && orderForm.get('service')?.touched">
-        Please select at least one service.
-      </div>
+
     </div>
 
     <button type="submit" class="submit-button">Submit Order</button>

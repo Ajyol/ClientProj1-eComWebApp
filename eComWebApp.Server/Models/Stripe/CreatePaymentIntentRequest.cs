@@ -1,4 +1,4 @@
-﻿namespace eComWebApp.Server.Models
+﻿namespace eComWebApp.Server.Models.Stripe
 {
     public class CreatePaymentIntentRequest
     {
