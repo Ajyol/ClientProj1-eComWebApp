@@ -8,6 +8,7 @@ import { LoginComponent } from './login/login.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { PaymentComponent } from './payment/payment.component';
+import { UserCreateComponent } from './user-create/user-create.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'payment', component: PaymentComponent },
   { path: 'login', component: LoginComponent },
   { path: 'user', component: UserComponent },
+  { path: 'user-create', component: UserCreateComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password/:token', component: ResetPasswordComponent }, 
   { path: '**', redirectTo: '', pathMatch: 'full' }
