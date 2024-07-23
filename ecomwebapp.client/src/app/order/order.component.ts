@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl, AbstractControl } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IOrder } from '../shared/Models/order';
-import { loadStripe } from '@stripe/stripe-js';
 
 @Component({
   selector: 'app-order',
@@ -13,7 +12,6 @@ import { loadStripe } from '@stripe/stripe-js';
 export class OrderComponent implements OnInit {
   orderForm: FormGroup;
   selectedService: string | null = null;
-  private stripePromise = loadStripe('pk_test_51PCOszIlp3RX116JX7Kv1GXsltPOgDL4cQp2gTbIHhs7mscAxSNhSAsqZSjSOk4AsSlH0lF6gydQk8YPcEGHu3q100axO2e1cL'); // Use publishable key for frontend
   isLoading = false; // Add loading state
 
   services = [
@@ -22,7 +20,7 @@ export class OrderComponent implements OnInit {
     { id: 3, name: 'Service 3', price: 30 },
   ];
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private route: ActivatedRoute) {
+  constructor(private fb: FormBuilder, private http: HttpClient, private route: ActivatedRoute, private router: Router) {
     this.orderForm = this.fb.group({
       name: ['', Validators.required],
       address: ['', Validators.required],
@@ -66,32 +64,11 @@ export class OrderComponent implements OnInit {
       };
 
       try {
-        // Post the order to your backend
         const response = await this.http.post<IOrder>('https://localhost:7248/api/Orders', order).toPromise();
         console.log('Order submitted', response);
 
-        // Get the payment session ID from your backend
-        const paymentResponse = await this.http.post<{ sessionId?: string }>('/api/payments/create-checkout-session', {
-          services: selectedServices
-        }).toPromise();
-
-        if (paymentResponse?.sessionId) {
-          const stripe = await this.stripePromise;
-
-          if (stripe) {
-            const { error } = await stripe.redirectToCheckout({
-              sessionId: paymentResponse.sessionId,
-            });
-
-            if (error) {
-              console.error("Stripe Checkout error", error);
-            }
-          } else {
-            console.error("Stripe not loaded");
-          }
-        } else {
-          console.error('Invalid payment response', paymentResponse);
-        }
+        localStorage.setItem('selectedServices', JSON.stringify(selectedServices));
+        this.router.navigate(['/payment']);
       } catch (error) {
         console.error('Error submitting order', error);
       } finally {

@@ -1,9 +1,7 @@
 ﻿using eComWebApp.Server.Models;
 using Microsoft.AspNetCore.Mvc;
-using Stripe;
 using Stripe.Checkout;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+
 
 [ApiController]
 [Route("api/[controller]")]

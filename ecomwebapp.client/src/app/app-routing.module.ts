@@ -7,11 +7,13 @@ import { UserComponent } from './user/user.component';
 import { LoginComponent } from './login/login.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { PaymentComponent } from './payment/payment.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'about', component: AboutUsComponent },
   { path: 'order', component: OrderComponent },
+  { path: 'payment', component: PaymentComponent },
   { path: 'login', component: LoginComponent },
   { path: 'user', component: UserComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
