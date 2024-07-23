@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserCreateService } from './user-create.service';
 import { UserCreateDto } from '../shared/Models/user.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-create',
@@ -11,7 +12,7 @@ import { UserCreateDto } from '../shared/Models/user.model';
 export class UserCreateComponent {
   userForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private userService: UserCreateService) {
+  constructor(private fb: FormBuilder, private userService: UserCreateService, private router: Router) {
     this.userForm = this.fb.group({
       userName: ['', Validators.required],
       firstName: ['', Validators.required],
@@ -25,13 +26,15 @@ export class UserCreateComponent {
   onSubmit(){
     if (this,this.userForm.valid) {
       const newUser : UserCreateDto = this.userForm.value;
-      this.userService.createUser(newUser).subscribe(
-        response => {
+      this.userService.createUser(newUser).subscribe({
+          next: (response) => {
           console.log('User created successfully', response);
+          this.router.navigate(['/login'])
         },
-        error => {
+        error: (error) => {
           console.error('Error creating user', error);
         }
+      }
       );
       
     }
