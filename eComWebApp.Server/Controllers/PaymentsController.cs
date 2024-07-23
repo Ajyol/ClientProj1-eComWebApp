@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Stripe.Checkout;
 
-
 [ApiController]
 [Route("api/[controller]")]
 public class PaymentsController : ControllerBase

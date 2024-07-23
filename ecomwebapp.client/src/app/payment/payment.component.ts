@@ -10,6 +10,7 @@ import { loadStripe } from '@stripe/stripe-js';
 export class PaymentComponent implements OnInit {
   private stripePromise = loadStripe('pk_test_51PCOszIlp3RX116JX7Kv1GXsltPOgDL4cQp2gTbIHhs7mscAxSNhSAsqZSjSOk4AsSlH0lF6gydQk8YPcEGHu3q100axO2e1cL'); // Use publishable key for frontend
   sessionId: string | null = null;
+  private apiUrl = 'https://localhost:7248/api'; // Define your backend URL here
 
   constructor(private http: HttpClient) {}
 
@@ -19,12 +20,18 @@ export class PaymentComponent implements OnInit {
 
   async createCheckoutSession(): Promise<void> {
     try {
-      const paymentResponse = await this.http.post<{ sessionId?: string }>('/api/payments/create-checkout-session', {
-        services: JSON.parse(localStorage.getItem('selectedServices') || '[]')
+      const selectedServices = JSON.parse(localStorage.getItem('selectedServices') || '[]');
+      console.log('Selected services:', selectedServices);
+
+      const paymentResponse = await this.http.post<{ sessionId?: string }>(`${this.apiUrl}/payments/create-checkout-session`, {
+        services: selectedServices
       }).toPromise();
+
+      console.log('Payment response:', paymentResponse);
 
       if (paymentResponse && paymentResponse.sessionId) {
         this.sessionId = paymentResponse.sessionId;
+        console.log('Session ID:', this.sessionId);
         await this.redirectToCheckout();
       } else {
         console.error('Invalid payment response', paymentResponse);
@@ -36,6 +43,7 @@ export class PaymentComponent implements OnInit {
 
   async redirectToCheckout(): Promise<void> {
     const stripe = await this.stripePromise;
+    console.log('Stripe object:', stripe);
 
     if (stripe && this.sessionId) {
       const { error } = await stripe.redirectToCheckout({
