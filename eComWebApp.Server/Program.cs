@@ -1,15 +1,19 @@
 using eComWebApp.Data;
 using eComWebApp.Data.Services;
 using eComWebApp.Server.Models;
+using eComWebApp.Server.Models.Stripe;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System;
+using Stripe;
 using System.IO;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Configure Stripe
+var stripeSettings = builder.Configuration.GetSection("Stripe");
+builder.Services.Configure<StripeSettings>(stripeSettings);
+StripeConfiguration.ApiKey = stripeSettings["SecretKey"];
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -40,7 +44,6 @@ builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
 // Register OrdersService with the dependency injection container
 builder.Services.AddScoped<IOrdersService, OrdersService>();
 
-
 // Register EmailService
 builder.Services.AddSingleton<IEmailService>(sp =>
 {
@@ -52,7 +55,6 @@ builder.Services.AddSingleton<IEmailService>(sp =>
         smtpSettings["User"], // Corrected to Username
         smtpSettings["Pass"],
         sp.GetRequiredService<ILogger<EmailService>>() // Inject ILogger<EmailService>
-
     );
 });
 
@@ -61,6 +63,7 @@ builder.Services.AddDataProtection()
     .PersistKeysToFileSystem(new DirectoryInfo(@"c:\keys")) // Ensure this path exists and is writable
     .SetApplicationName("eComWebApp");
 
+// Build the application
 var app = builder.Build();
 
 // Ensure database is created and seeded
@@ -68,6 +71,7 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var dbContext = services.GetRequiredService<ApplicationDbContext>();
+    var userManager = services.GetRequiredService<UserManager<User>>();
     var logger = services.GetRequiredService<ILogger<Program>>();
 
     try
@@ -75,7 +79,7 @@ using (var scope = app.Services.CreateScope())
         // Delete and recreate the database
         dbContext.Database.EnsureDeleted();
         dbContext.Database.EnsureCreated();
-        await AppDbInitializer.Initialize(dbContext, logger);
+        await AppDbInitializer.Initialize(dbContext, userManager, logger);
     }
     catch (Exception ex)
     {
@@ -98,7 +102,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 // Enable CORS
-app.UseCors(options => options.WithOrigins("https://127.0.0.1:4200")
+app.UseCors(options => options.WithOrigins("https://127.0.0.1:4200", "http://localhost:4200")
     .AllowAnyMethod()
     .AllowAnyHeader());
 

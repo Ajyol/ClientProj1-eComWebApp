@@ -17,7 +17,9 @@ import { LoginComponent } from './login/login.component';
 import { FooterComponent } from './core/footer/footer.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
-import { FormsModule } from '@angular/forms'; // Import FormsModule here
+import { FormsModule } from '@angular/forms';
+import { PaymentComponent } from './payment/payment.component';
+import { UserCreateComponent } from './user-create/user-create.component'; // Import FormsModule here
 
 
 @NgModule({
@@ -30,6 +32,8 @@ import { FormsModule } from '@angular/forms'; // Import FormsModule here
     FooterComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
+    PaymentComponent,
+    UserCreateComponent,
   ],
   imports: [
     BrowserModule,

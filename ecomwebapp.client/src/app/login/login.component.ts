@@ -1,7 +1,8 @@
+// login.component.ts
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { LoginService } from './login.service';
 
 @Component({
   selector: 'app-login',
@@ -10,27 +11,28 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  errorMessage: string | null = null; // Add error message property
+  errorMessage: string | null = null;
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private router: Router) {
+  constructor(private fb: FormBuilder, private loginService: LoginService, private router: Router) {
     this.loginForm = this.fb.group({
       userName: ['', Validators.required],
       password: ['', Validators.required]
     });
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   onSubmit(): void {
     if (this.loginForm.valid) {
-      this.http.post('https://localhost:7248/api/Users/Login', this.loginForm.value).subscribe({
+      const { userName, password } = this.loginForm.value;
+      this.loginService.login(userName, password).subscribe({
         next: (response) => {
           console.log('Login successful', response);
-          this.router.navigate(['/user']);  // Navigate to the user page
+          this.router.navigate(['/user']);
         },
         error: (error) => {
           console.error('Login error', error);
-          this.errorMessage = 'Invalid username or password';  // Set error message
+          this.errorMessage = error.message || 'Invalid username or password';
         }
       });
     } else {
