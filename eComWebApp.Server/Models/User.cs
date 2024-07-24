@@ -15,6 +15,13 @@ namespace eComWebApp.Server.Models
         {
             SecurityStamp = Guid.NewGuid().ToString();
         }
+
+        // Ensure the email is always stored in lowercase
+        public override string Email
+        {
+            get => base.Email;
+            set => base.Email = value.ToLowerInvariant();
+        }
     }
 
     public class UserGetDto
@@ -47,7 +54,7 @@ namespace eComWebApp.Server.Models
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
-        public string PasswordHash { get; set; }
+        public string Password { get; set; } 
     }
 
     public class LoginDto
@@ -57,7 +64,7 @@ namespace eComWebApp.Server.Models
 
         [Required]
         [DataType(DataType.Password)]
-        public string PasswordHash { get; set; }
+        public string Password { get; set; } 
     }
 
     public class ForgotPasswordDto
