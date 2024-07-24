@@ -3,11 +3,6 @@ using eComWebApp.Data.Enums;
 using eComWebApp.Models;
 using eComWebApp.Server.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 public class AppDbInitializer
 {
