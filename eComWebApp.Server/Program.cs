@@ -71,6 +71,7 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var dbContext = services.GetRequiredService<ApplicationDbContext>();
+    var userManager = services.GetRequiredService<UserManager<User>>();
     var logger = services.GetRequiredService<ILogger<Program>>();
 
     try
@@ -78,7 +79,7 @@ using (var scope = app.Services.CreateScope())
         // Delete and recreate the database
         dbContext.Database.EnsureDeleted();
         dbContext.Database.EnsureCreated();
-        await AppDbInitializer.Initialize(dbContext, logger);
+        await AppDbInitializer.Initialize(dbContext, userManager, logger);
     }
     catch (Exception ex)
     {
