@@ -29,28 +29,20 @@ public class EmailService : IEmailService
 
         try
         {
+            var mail = new MailMessage();
             using (var client = new SmtpClient(_smtpServer, _smtpPort))
             {
-                client.UseDefaultCredentials = false;
+
                 client.Credentials = new NetworkCredential(_smtpUsername, _smtpPassword);
                 client.EnableSsl = true;
-
-                var mailMessage = new MailMessage
-                {
-                    From = new MailAddress(_smtpUsername),
-                    Subject = subject,
-                    Body = htmlMessage,
-                    IsBodyHtml = true
-                };
-                mailMessage.To.Add(email);
-
-                // Log sender and receiver
-                _logger.LogInformation($"Sending email from {_smtpUsername} to {email}");
-
-                await client.SendMailAsync(mailMessage);
-
-                // Log success
-                _logger.LogInformation($"Email sent successfully from {_smtpUsername} to {email}");
+                mail.From = new MailAddress("ajyol.dhamala@selu.edu");
+                mail.To.Add(email);
+                mail.Subject = "Your Subject";
+                var htmlView = AlternateView.CreateAlternateViewFromString(htmlMessage, null, "text/html");
+                mail.AlternateViews.Add(htmlView);
+                client.Send(mail);
+                Console.WriteLine("Sent");
+                Console.ReadLine();
             }
         }
         catch (Exception ex)
