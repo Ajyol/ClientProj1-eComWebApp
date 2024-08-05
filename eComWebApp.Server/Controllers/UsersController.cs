@@ -1,10 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using eComWebApp.Data;
 using eComWebApp.Server.Models;
 using Microsoft.EntityFrameworkCore;
@@ -81,7 +76,7 @@ namespace eComWebApp.Server.Controllers
                 UserName = newUserDto.UserName,
                 FirstName = newUserDto.FirstName,
                 LastName = newUserDto.LastName,
-                Email = newUserDto.Email,
+                Email = newUserDto.Email.ToLowerInvariant(),
                 DateOfBirth = newUserDto.DateOfBirth
             };
 
@@ -125,7 +120,7 @@ namespace eComWebApp.Server.Controllers
             existingUser.UserName = updatedUserDto.UserName;
             existingUser.FirstName = updatedUserDto.FirstName;
             existingUser.LastName = updatedUserDto.LastName;
-            existingUser.Email = updatedUserDto.Email;
+            existingUser.Email = updatedUserDto.Email.ToLowerInvariant();
             existingUser.DateOfBirth = updatedUserDto.DateOfBirth;
 
             var result = await _userManager.UpdateAsync(existingUser);
@@ -176,12 +171,12 @@ namespace eComWebApp.Server.Controllers
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
             var user = await _userManager.FindByNameAsync(loginDto.UserName);
-
             if (user == null || !await _userManager.CheckPasswordAsync(user, loginDto.Password))
             {
+                _logger.LogWarning("Login attempt failed for user: {UserName}", loginDto.UserName);
                 return Unauthorized("Invalid username or password.");
             }
-
+            _logger.LogInformation("Login successful for user: {UserName}", loginDto.UserName);
             return Ok(new { message = "Login successful" });
         }
 
@@ -197,7 +192,7 @@ namespace eComWebApp.Server.Controllers
             _logger.LogInformation($"Received forgot password request for email: {request.Email}");
 
             var user = await _userManager.Users
-                                             .SingleOrDefaultAsync(u => u.Email.ToLower() == request.Email.ToLower());
+                                         .SingleOrDefaultAsync(u => u.Email.ToLower() == request.Email.ToLower());
 
             if (user == null)
             {
@@ -231,7 +226,6 @@ namespace eComWebApp.Server.Controllers
 
             return Ok("Password reset link has been sent to your email.");
         }
-
 
         [HttpPost("reset-password")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto request)

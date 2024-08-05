@@ -1,0 +1,34 @@
+<div class="form-container">
+    <h1>Create a New User</h1>
+    <div class="user-create-container">
+        <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+          <div>
+            <label for="userName">Username:</label>
+            <input id="userName" formControlName="userName" />
+          </div>
+          <div>
+            <label for="firstName">First Name:</label>
+            <input id="firstName" formControlName="firstName" />
+          </div>
+          <div>
+            <label for="lastName">Last Name:</label>
+            <input id="lastName" formControlName="lastName" />
+          </div>
+          <div>
+            <label for="email">Email:</label>
+            <input id="email" formControlName="email" />
+          </div>
+          <div>
+            <label for="dateOfBirth">Date of Birth:</label>
+            <input id="dateOfBirth" type="date" formControlName="dateOfBirth" />
+          </div>
+          <div>
+            <label for="passwordHash">Password:</label>
+            <input id="passwordHash" type="password" formControlName="passwordHash" />
+          </div>
+          <button type="submit" [disabled]="!userForm.valid">Create User</button>
+        </form>
+      </div>
+</div>
+
+  

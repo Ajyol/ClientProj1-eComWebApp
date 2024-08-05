@@ -1,0 +1,55 @@
+.form-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+  }
+  
+  h1 {
+    text-align: center;
+    color: #4267b2;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    margin-bottom: 20px;
+  }
+  
+.user-create-container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  .user-create-container div {
+    margin-bottom: 15px;
+  }
+  
+  .user-create-container label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .user-create-container input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+  }
+  
+  .user-create-container button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .user-create-container button:disabled {
+    background-color: #ccc;
+  }
+  
