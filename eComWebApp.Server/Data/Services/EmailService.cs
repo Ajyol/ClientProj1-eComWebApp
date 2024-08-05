@@ -37,7 +37,7 @@ public class EmailService : IEmailService
                 client.EnableSsl = true;
                 mail.From = new MailAddress("ajyol.dhamala@selu.edu");
                 mail.To.Add(email);
-                mail.Subject = "Your Subject";
+                mail.Subject = "Reset Password";
                 var htmlView = AlternateView.CreateAlternateViewFromString(htmlMessage, null, "text/html");
                 mail.AlternateViews.Add(htmlView);
                 client.Send(mail);
