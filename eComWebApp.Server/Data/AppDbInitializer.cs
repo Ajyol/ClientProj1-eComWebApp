@@ -2,15 +2,11 @@
 using eComWebApp.Data.Enums;
 using eComWebApp.Models;
 using eComWebApp.Server.Models;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 public class AppDbInitializer
 {
-    public static async Task Initialize(ApplicationDbContext context, ILogger logger)
+    public static async Task Initialize(ApplicationDbContext context, UserManager<User> userManager, ILogger logger)
     {
         try
         {
@@ -18,7 +14,7 @@ public class AppDbInitializer
 
             if (!context.Users.Any())
             {
-                await SeedUsers(context);
+                await SeedUsers(userManager, logger);
                 logger.LogInformation("Users seeded successfully.");
             }
             else
@@ -42,7 +38,7 @@ public class AppDbInitializer
         }
     }
 
-    private static async Task SeedUsers(ApplicationDbContext context)
+    private static async Task SeedUsers(UserManager<User> userManager, ILogger logger)
     {
         var seededUser = new User
         {
@@ -50,12 +46,19 @@ public class AppDbInitializer
             FirstName = "Ajyol",
             LastName = "Dhamala",
             Email = "ajyold81@gmail.com",
-            DateOfBirth = new DateTime(2003, 7, 14),
-            PasswordHash = "Admin@123" 
+            DateOfBirth = new DateTime(2003, 7, 14)
         };
 
-        context.Users.Add(seededUser);
-        await context.SaveChangesAsync();
+        var result = await userManager.CreateAsync(seededUser, "Admin@123");
+
+        if (result.Succeeded)
+        {
+            logger.LogInformation("Seeded user 'admin' successfully.");
+        }
+        else
+        {
+            logger.LogError("Failed to seed user 'admin'. Errors: {0}", string.Join(", ", result.Errors.Select(e => e.Description)));
+        }
     }
 
     private static async Task SeedOrders(ApplicationDbContext context)
